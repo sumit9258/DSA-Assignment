@@ -1,45 +1,67 @@
-function getIntersectionNode(headA, headB) {                        
-    if (!headA || !headB) return null;
-
-    let tempA = headA;
-    let tempB = headB;
-
-    while (tempA !== tempB) {
-        tempA = tempA ? tempA.next : headB;
-        tempB = tempB ? tempB.next : headA;
+class ListNode {
+    constructor(val) {
+      this.val = val;
+      this.next = null;
     }
-
-    return tempA;
-}
-
-
-function ListNode(val) {
-    this.val = val;
-    this.next = null;
-}
-
-let node1 = new ListNode(1);
-let node2 = new ListNode(2);
-let node3 = new ListNode(3);
-let node4 = new ListNode(4);
-let node5 = new ListNode(5);
-let node6 = new ListNode(6);
-
-node1.next = node2;
-node2.next = node3;
-node3.next = node4;
-node4.next = node5;
-node5.next = node6;
-
-let nodeA1 = new ListNode(7);
-let nodeA2 = new ListNode(8);
-nodeA1.next = nodeA2;
-nodeA2.next = node3; 
-
-let headA = nodeA1; 
-let headB = node1;  
-let intersectionNode = getIntersectionNode(headA, headB);
-console.log(intersectionNode ? intersectionNode.val : "No intersection");
-
-
-
+  }
+  
+  function getIntersectionNode(headA, headB) {
+    if (!headA || !headB) return null;
+  
+    let pA = headA, pB = headB;
+  
+    while (pA !== pB) {
+      pA = pA ? pA.next : headB;  
+      pB = pB ? pB.next : headA;  
+    }
+  
+    return pA; 
+  }
+  
+  function createLinkedList(arr) {
+    if (arr.length === 0) return null;
+    let head = new ListNode(arr[0]);
+    let current = head;
+    for (let i = 1; i < arr.length; i++) {
+      current.next = new ListNode(arr[i]);
+      current = current.next;
+    }
+    return head;
+  }
+  
+  function printLinkedList(head) {
+    let current = head;
+    let result = [];
+    while (current) {
+      result.push(current.val);
+      current = current.next;
+    }
+    console.log(result.join(" -> "));
+  }
+  
+  let common = new ListNode(8);
+  common.next = new ListNode(10);
+  
+  let listA = createLinkedList([1, 2, 3]);
+  let currentA = listA;
+  while (currentA.next) {
+    currentA = currentA.next;
+  }
+  currentA.next = common;
+  
+  let listB = createLinkedList([6, 7]);
+  let currentB = listB;
+  while (currentB.next) {
+    currentB = currentB.next;
+  }
+  currentB.next = common;
+  
+  console.log("List A:");
+  printLinkedList(listA);
+  
+  console.log("List B:");
+  printLinkedList(listB);
+  
+  let intersection = getIntersectionNode(listA, listB);
+  console.log("Intersection at node with value:", intersection ? intersection.val : "No intersection");
+  
